@@ -1,66 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LARAVEL 11
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 1. Introduction
 
-## About Laravel
+-   Laravel is a MVC php framework for build full featured, large scale web application
+-   It was developed by Taylor Otwell
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 2. Advantage and Disadvantage of Laravel
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Advantage
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   Single Authentication
+-   Mail services
+-   Speed
+-   Security
 
-## Learning Laravel
+### Disadvantage
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   Updates might be problematic.
+-   Composer package manager is goog to use but not as good as NPM.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 3. Composer and Xampp
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Composer
 
-## Laravel Sponsors
+-   It is a tool that allows user to includes all the dependencies and libraries in our project.
+-   It is a PHP package manager.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+> **Note** In laravel all the dependencies are listed in composer.json file placed in the root of the project.
 
-### Premium Partners
+### Xampp
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   It is a free, open-source software that provides a simple and convenient way to set up the local web server.
+-   X-cross-platform, A- apache a web server, M-Mysql, P-PHP, P-Perl
 
-## Contributing
+## 4. Artisan
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   It is a command line interface used in laravel.
+-   It includes a set of commands which assists in building a web application.
 
-## Code of Conduct
+> **Note** Make sure you have composer and PHP installed in your system before you install laravel.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 5. Installation
 
-## Security Vulnerabilities
+-   Step 1: Install composer
+-   Step 2: Go to directory where you want to install your new laravel project and type following command.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```js
+    composer create-project laravel/laravel app_name
 
-## License
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+OR
+
+```js
+    1. composer global require laravel/installer
+    2. laravel new app_name
+```
+
+> **Note** To serve the project in specific port `php artisan serve --port=4000`.
+
+## 6. Famous Extension for the VS Code
+
+1. laravel artisan: Ryan naddy creator
+2. laravel blade snippets: winnielin creator
+3. laravel blade spacer: Austen cameron creator
+4. larave goto view: codingyu
+5. laravel snippets: winnie lin
+6. laravel extra intellisens: amir
+7. live sass compiler: Ritwick day
+8. php intellisense: felix becker
+9. getter/setter generator: agustin martiniz
+10. emmet live: yuri semen
+11. vscode great icons: emmanuel
