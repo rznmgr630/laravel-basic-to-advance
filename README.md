@@ -4,8 +4,8 @@
 
 -   Laravel is a MVC php framework for build full featured, large scale web application
 -   It was developed by Taylor Otwell
--   MVC is a software design pattern commonly used for developing user interface that divides the related program logic into 3 interrealted elements.
--   `Model => It is responsible for managine the data rules and logic of the application`
+-   MVC is a software design pattern commonly used for developing user interface that divides the related program logic into 3 interrelated elements.
+-   `Model => It is responsible for managing the data rules and logic of the application`
 -   `View => It is UI part`
 -   `Controller => It is responsible for accepting inputs, validate it and converts it to commands for a model or view`
 
@@ -99,3 +99,67 @@ OR
 
 -   It contains all the installed packages.
 -   To view all the installed packages `composer show --tree`
+
+## 9. Routing
+
+#### 1. Introduction
+
+-   Routing is a path for opening a website or it is a URL for opening a file.
+-   In laravel all the request are mapped with the help of routes.
+
+#### 2. Syntax
+
+```js
+// ***** Basic Routing *******
+Route::get("/", function () {
+    return view("welcome");
+});
+```
+
+```js
+// ***** Return a view *******
+Route::view("/", "welcome");
+```
+
+```js
+// ***** Post request *******
+Route::post("/users", function(Request $request){
+  echo print_r($request);
+});
+```
+
+#### 3. Dynamic Route
+
+-   If you can to pass a dynamic value in the route param you can use the below syntax.
+
+```js
+Route::post("/users/{id}", function ($id) {
+    echo($id);
+});
+```
+
+#### 4. Named Route
+
+-   It is used to assign a unique name to a specify route.
+-   It enhances readability,maintainability and flexibility especially when URls change.
+
+```js
+Route::post("/users/{id}", function ($id) {
+    echo($id);
+})->name('users.add');
+```
+
+#### 4. Grouping Routes
+
+-   If the route path starts with the same prefix then we can use the concept of grouping.
+
+```js
+Route::prefix('users')->group(()=>{
+    Route::get('/',[UserController::class,'getAll']);
+    Route::post('/',[UserController::class,'addNew']);
+    Route::put('/{id}',[UserController::class,'update']);
+    Route::delete('/{id}',[UserController::class,'delete']);
+  })
+```
+
+> **Note** So to call each route we need to add `/users` at the beginning of the route
