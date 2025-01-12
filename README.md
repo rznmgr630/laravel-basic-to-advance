@@ -23,7 +23,7 @@
 -   Updates might be problematic.
 -   Composer package manager is goog to use but not as good as NPM.
 
-## 3. Composer and Xampp
+## 3. Composer and XAMPP
 
 ### Composer
 
@@ -163,3 +163,30 @@ Route::prefix('users')->group(()=>{
 ```
 
 > **Note** So to call the route we need to add `/users` at the beginning of the route
+
+#### 4. Route Model Binding
+
+-   Laravel route model binding provides a convenient way to automatically inject the model instance directed into your route.
+
+```js
+Route::get("/users/{id}", function ($id) {}); // old method
+Route::get("/users/{user}", function (User $user) { return $user}); // Route model binding
+```
+
+> **Note** In the above method it will only search by id but if you want to search by other field
+
+```js
+Route::get("/users/{user:firstName}", function (User $user) { return $user}); // It will search by firstName field
+```
+
+> **Note** If you don't wanna pass the value directly in the param then you can use below syntax
+
+```js
+// ********** Inside web .php **********
+Route::get("/users/{user}", function (User $user) { return $user});
+
+// ********** Inside your model **********
+public function getRouteKeyName(){
+  return 'firstName';
+}
+```
