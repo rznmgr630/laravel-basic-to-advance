@@ -162,4 +162,4 @@ Route::prefix('users')->group(()=>{
   })
 ```
 
-> **Note** So to call each route we need to add `/users` at the beginning of the route
+> **Note** So to call the route we need to add `/users` at the beginning of the route
