@@ -292,35 +292,144 @@ php artisan make:view about
   // Step 1
   php artisan make:component Alert
 
-// Step 2
-// In Alert.php file
-namespace App\View\Components;
+  // Step 2
+  // In Alert.php file
+  namespace App\View\Components;
 
-use Illuminate\View\Component;
+  use Illuminate\View\Component;
 
-class Alert extends Component
-{
-    public $type;
+  class Alert extends Component
+  {
+      public $type;
 
-    public function __construct($type = 'info')
-    {
-        $this->type = $type;
+      public function __construct($type = 'info')
+      {
+          $this->type = $type;
+      }
+
+      public function render()
+      {
+          return view('components.alert');
+      }
+  }
+
+  // Step 3
+  // In resources/views/components/alert.blade.php file
+  <div class="alert alert-{{ $type }}">
+  {{ $slot }}
+  </div>
+
+  // Step 4
+  // In your view
+  <x-alert type="success">Hello</x-alert>
+```
+
+## 12. Form Validation
+
+-   Whenever we take user input, we should validate it to ensure it meets our requirements.
+-   Laravel provides a robust validation system that allows you to validate user input and display error messages.
+
+```js
+  // Basic validation
+  $request->validate([
+    'name' => 'required', // The name field is required
+    'email' => 'required|email', // The email field is required and must be a valid email address
+   ]);
+
+  //  Customize the default validation message
+  $request->validate([
+    'name' => [
+      'required' => 'Please enter your name',
+    ],
+    'email' => [
+      'required' => 'Please enter your email',
+      'email' => 'Please enter a valid email address',
+    ],
+  ]);
+
+  OR
+  $request->validate([
+     'name' => 'required',
+    'email' => 'required|email',
+  ],[
+    'name.required' => 'Please enter your name',
+    'email.required' => 'Please enter your email',
+    'email.email' => 'Please enter a valid email address',
+  ])
+```
+
+> **Note** If any validation fails then it will redirect back to the previous page with the validation errors. In case of sending a checkbox we need to specify the name field with an array like `name="language[]"` and in
+> the validation we need to specify the validation rule as `language.*` to validate each item in the array.
+
+#### 1. Preserving the old value
+
+-   When a form is submitted, the old value of the field is not preserved.
+-   To preserve the old value, we can use the `old()` helper function.
+
+```js
+ // Preserving the old value
+ <input type="text" name="name" value="{{ old('name') }}">
+```
+
+#### 2. Displaying the validation errors
+
+-   To display the validation errors, we can use the `withErrors()` method.
+-   This method will display the validation errors in the view.
+-   We can also use the `withInput()` method to preserve the old input values.
+-   We can use the `withErrors()` and `withInput()` methods together to display the validation errors and preserve the old input values.
+-   We can also use the `validate()` method to validate the request data and display the validation errors.
+
+```js
+// Get all error at once inside the view
+  @if($errors->any())
+    @foreach($errors->all() as $error)
+      <div style="color:red;">{{$error}} </div>
+    @endforeach
+  @endif
+
+
+  // To display the error after corresponding input field
+  @if($errors->has('name')) OR @if($errors->first('name'))
+      <div style="color:red;">{{$errors->first('name')}} </div>
+  @endif
+
+  // ===============OR=================
+  <div style="color:red;">
+    @error('name')
+      {{$message}}
+    @enderror
+  </div>
+```
+
+#### 3. Publishing the validation message
+
+-   syntax `php artisan lang:publish`
+-   This command will publish the default validation messages in the language file.
+
+#### 4. Custom Validation rule
+
+-   We can create a custom validation rule by creating a class that implements the `Validator` interface.
+-   We can then use this custom validation rule in our validation rules.
+
+```js
+  // Step 1: Create a new class that implements the Validator interface
+  php artisan make:rule Uppercase
+
+  // Step 2: Define the validation logic in the class
+  namespace App\Rules;
+  use Illuminate\Contracts\Validation\ValidationRule;
+  class Age implements ValidationRule
+  {
+    public function validate($attribute, $value,$fail) {
+      if($value!==strtoupper($value)){
+        $fail('The :attribute must be in uppercase.');
+      }
     }
+  }
 
-    public function render()
-    {
-        return view('components.alert');
-    }
-}
-
-
-// Step 3
-// In resources/views/components/alert.blade.php file
-<div class="alert alert-{{ $type }}">
-{{ $slot }}
-</div>
-
-// Step 4
-// In your view
-<x-alert type="success">Hello</x-alert>
+  // Step 3 inside the controller
+  $request->validate([
+    'name' => 'required|uppercase', // The name field is required and must be uppercase
+    'email' => 'required|email',
+   ]);
 ```
