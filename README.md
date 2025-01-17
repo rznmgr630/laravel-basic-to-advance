@@ -235,3 +235,92 @@ return ["name"=>"John","age"=>30];
 return redirect()->route("users.index");
 return redirect('/');
 ```
+
+## 11. View
+
+#### 1. Introduction
+
+-   It is the UI part of any application.
+
+#### 2. How to create a view
+
+```js
+php artisan make:view about
+```
+
+> **Note** We can manually create a view without using above command
+
+#### 3. Nested views
+
+-   If we are creating a view inside any folder then we can called it as a nested views.
+-   We can access nested views using the `return view('admin.login')`
+
+#### 4. Passing data to view
+
+-   Method 1: Using `with()` method for e.g. `return view('users.index')->with('name','John');`
+-   Method 2: Using `compact()` method for e.g. `return view('users.index',compact('users'))`
+-   Method 3: Using `view('view_name',array)` for e.g. `return view('welcome',['name'=>'Rajan'])`
+
+#### 5. Check if the view exists or not before returning
+
+-   Method 1: Using `view()->exists('view_name')` for e.g. `if(view()->exists('welcome')`
+-   Method 2: Using View facade for e.g. `if(View::exists('welcome'))`
+
+#### 6. Blade Templating Engine
+
+-   Blade is the default templating engine for Laravel.
+-   It is used to create dynamic and reusable views.
+-   Supports template inheritance and sections for creating maintainable layouts.
+-   Allows embedding PHP code directly within templates using Blade syntax.
+-   Simplifies rendering dynamic data within views.
+-   Provides features like conditional rendering, loops, and component rendering.
+-   Facilitates the creation of reusable UI components.
+-   Offers built-in directives `(e.g., @if, @foreach, @include, @extends)` for writing cleaner and more expressive templates.
+
+#### 7. Subview
+
+-   A subview in Blade allows you to include one view inside another, enabling code modularity, reusability, and better organization of your templates.
+-   To use a subview, you need to create a new view file and then include it in your main view using the `@include` directive.
+-   To pass data to a subview, you can use the `@include` directive with the `data` attribute , like `@include('subview', ['name' => 'John'])`.
+-   @includeIf('subview') // This will include the subview only if the subview exists.
+
+#### 8. component
+
+-   Components in Laravel are reusable UI building blocks that encapsulate HTML, CSS, and Blade logic, making it easier to create consistent and maintainable templates.
+
+```js
+  // Step 1
+  php artisan make:component Alert
+
+// Step 2
+// In Alert.php file
+namespace App\View\Components;
+
+use Illuminate\View\Component;
+
+class Alert extends Component
+{
+    public $type;
+
+    public function __construct($type = 'info')
+    {
+        $this->type = $type;
+    }
+
+    public function render()
+    {
+        return view('components.alert');
+    }
+}
+
+
+// Step 3
+// In resources/views/components/alert.blade.php file
+<div class="alert alert-{{ $type }}">
+{{ $slot }}
+</div>
+
+// Step 4
+// In your view
+<x-alert type="success">Hello</x-alert>
+```
