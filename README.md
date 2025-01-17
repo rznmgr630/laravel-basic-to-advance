@@ -149,7 +149,7 @@ Route::post("/users/{id}", function ($id) {
 })->name('users.add');
 ```
 
-#### 4. Grouping Routes
+#### 5. Grouping Routes
 
 -   If the route path starts with the same prefix then we can use the concept of grouping.
 
@@ -164,7 +164,7 @@ Route::prefix('users')->group(()=>{
 
 > **Note** So to call the route we need to add `/users` at the beginning of the route
 
-#### 4. Route Model Binding
+#### 6. Route Model Binding
 
 -   Laravel route model binding provides a convenient way to automatically inject the model instance directed into your route.
 
@@ -189,4 +189,49 @@ Route::get("/users/{user}", function (User $user) { return $user});
 public function getRouteKeyName(){
   return 'firstName';
 }
+```
+
+## 10. Controller
+
+#### 1. Introduction
+
+-   It is the central unit that handles the user requests,model and view.
+
+#### 2. How to create a controller
+
+```js
+php artisan make:controller UserController
+// here you can pass
+// --resource to get all the required function inside controller at once
+// --model=User to include the model in the controller
+```
+
+> **Note** The controller will be created in app\Http\Controllers directory
+
+#### 3. How to use a controller
+
+```js
+use App\Http\Controllers\UserController;
+
+Route::get('/users',[UserController::class,'getAll']);
+```
+
+#### 4. HTTP Response
+
+```js
+//  Response as a view
+return view("users.index");
+
+// Response as a  text
+return "Hello World";
+
+// Response as a json
+return response()->json(["name"=>"John","age"=>30]);
+
+// Response as an array
+return ["name"=>"John","age"=>30];
+
+// Response as a function/redirect
+return redirect()->route("users.index");
+return redirect('/');
 ```
