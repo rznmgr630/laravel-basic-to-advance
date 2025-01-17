@@ -433,3 +433,22 @@ php artisan make:view about
     'email' => 'required|email',
    ]);
 ```
+
+## 13. URL Generation
+
+-   In laravel to work with url we have `URL` facade and `url()` helper function
+
+```js
+// Basic syntax
+$url = URL::to("home");
+$url = url("home");
+
+URL::current(); // to get current path
+URL::full(); // to get current path along with query param
+
+URL::previous(); // To get the previous path
+
+URl::to("about", ["rajan"]); // to generate url with route param rajan
+
+URL::to('search', ['q' => 'Laravel']); // to generate url with query param q=laravel
+```
