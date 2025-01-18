@@ -609,3 +609,57 @@ function getUsers() {
   }
 
 ```
+
+## 19. Laravel Session
+
+-   Laravel provides a simple way to store and retrieve data from the user's session using the `Session` facade.
+-   We can use the `put`, `get`, `forget`, `flush`, `has`, `all` methods to store and retrieve data from the session.
+-   Sessions provide a way to store information across multiple requests for a single user.
+-   The session is often used to store temporary data like user information, flash messages, or form input that persists only for the duration of the session or until explicitly cleared.
+
+#### 1. Basic Example
+
+```js
+  // Store data in session
+  session(['key' => 'value']);
+
+  // Retrieve data from session
+  $value = session('key'); // Output: 'value'
+
+  // Default value if key doesn't exist
+  $value = session('key', 'default');
+
+```
+
+#### 2. Flash Message
+
+```js
+  // Add a flash message
+  session()->flash('status', 'Profile updated!');
+
+  // Access the flash message in the next request
+  echo session('status'); // Output: 'Profile updated!'
+
+```
+
+#### 3. Check whether the session has some value
+
+```js
+// inside controller
+if (session("status")) {}
+if(session()->has('status')){}
+
+// Inside view
+@if(session('status'))
+  // do something
+@endif
+
+```
+
+#### 4. Deleting Session Data:
+
+```js
+session()->forget('key');
+session()->flush(); // clear all the data
+
+```
