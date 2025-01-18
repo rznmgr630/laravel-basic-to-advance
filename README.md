@@ -191,6 +191,17 @@ public function getRouteKeyName(){
 }
 ```
 
+#### 7. Any and Match Route function
+
+```js
+  // This will match to any http requests method
+  Route::any('/users',[UserController::class,'any']);
+
+
+  // If you want to match the request method to a specific method
+  Route::match(['get','post'],'/users',[UserController::class,'match']);
+```
+
 ## 10. Controller
 
 #### 1. Introduction
@@ -500,4 +511,101 @@ URL::to('search', ['q' => 'Laravel']); // to generate url with query param q=lar
 
 ```js
     Route::get('/dashboard',[DashboardController:class,'index'])->middleware(AuthMiddleware::class);
+```
+
+## 15. DB
+
+-   Laravel uses Eloquent ORM to interact with the database.
+-   Eloquent ORM is an Object Relational Mapping system that allows us to interact with the database using PHP objects.
+
+#### 1. Basic example
+
+```js
+// inside the usercontroller
+use Illuminate\Supports\Facades\DB;
+
+function getUsers() {
+    return DB::select("select * from users");
+}
+```
+
+#### 2. Query Builder
+
+-   Query Builder is a fluent interface to create and execute database queries.
+-   It is used to build and execute SQL queries.
+
+```js
+  // inside the usercontroller
+  use Illuminate\Supports\Facades\DB;
+
+  function getUsers() {
+      // $result=DB::table('users')->get();
+      $result=DB::table('users')->where('phone','12345')->get();
+      return view('user',compact(['result']))
+  }
+```
+
+## 16. Model
+
+-   In Laravel, a model is a class that represents a database table.
+-   It is responsible for managing the data rules and logic of the application.
+-   It takes the user input from the controller.
+-   We can use the `make:model` command to create a new model.
+
+#### 1. How to create a Model
+
+```js
+  php artisan make:model User
+```
+
+> **Note** When we create a model, laravel basically tries to point to the table with the same name of the model. So if we create a model called `User`,
+> it will try to point to the `users` table. If you want to point the model to a different table, you can specify the table name in the model.
+> For example: `protected $table = 'users_table';`
+
+#### 2. How to use model inside a controller
+
+```js
+  // inside your controller
+ use App\Models\User;
+
+  function getAllUsers(){
+    $users = User::all();
+    return $users;
+  }
+
+```
+
+#### 2. Inspecting model
+
+-   In order to view the detail of the model we can use this command `php artisan model:show User`
+
+## 17. HTTP Client
+
+-   Laravel provides a simple way to make HTTP requests using the `Http` facade.
+-   We can use the `get`, `post`, `put`, `patch`, `delete` methods to make HTTP requests.
+
+```js
+  function getJsonData(){
+    $response = Http::get('https://jsonplaceholder.typicode.com/posts');
+    $data=$response->body();
+    return $response->json($response);
+  }
+```
+
+## 18. HTTP Request Class
+
+-   Laravel provides a simple way to access the user's HTTP request using the `Request` facade.
+-   We can use the `input`, `method`, `header`, `cookie`, `ip`, `userAgent`, `url`, `secure`, `isSecure`, `isLocal`, `isAjax`, `isMethod`, `isPost`, `isGet`, `isPut`, `isPatch`, `isDelete` methods to access the HTTP request.
+
+```js
+  function store(Request $request){
+     echo $request->input('name');
+     echo $request->method();
+     echo $request->header('Accept');
+     echo $request->cookie('token');
+     echo $request->ip();
+     echo $request->userAgent();
+     echo $request->url();
+  }
+
 ```
