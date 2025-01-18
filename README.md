@@ -452,3 +452,52 @@ URl::to("about", ["rajan"]); // to generate url with route param rajan
 
 URL::to('search', ['q' => 'Laravel']); // to generate url with query param q=laravel
 ```
+
+## 14. Middlware
+
+-   It is the piece of code that runs in betweeen any request and response cycle.
+-   It can be used to perform any task like authentication, rate limiting, logging etc.
+-   We can use middleware in routes, controllers or even in the middleware class itself.
+
+#### 1. How to create a middleware
+
+```js
+ php artisan make:middleware AuthMiddleware
+
+//  Inside the middleware you can check whether the user is authenticated or not
+```
+
+#### 2. Registering middleware [Global and Group Middleware]
+
+-   Go to `bootstrap\app.php` file and inside the ->withMiddleware() function
+
+```js
+    ->withMiddleware(function(Middleware $middleware){
+      // This is global middleware
+      $middleware->append(AuthMiddleware::class);
+
+      // This is group middleware
+      $middleware->appendToGroup('check1',[
+        AgeCheck::class,
+        CountryCheck::class
+      ]);
+    })
+
+
+    // To use the group middleware in the web.php
+    Route::group(['middleware' => 'check1'], function () { }
+    Route::middleware('check1')->group(function(){
+       // Register your routes here
+    })
+
+    OR
+    Route::get('/home',[UserController::class,'getHome'])->middleware('check1');
+```
+
+#### 2. Assigning middleware to Routes
+
+-   We can assign middleware to routes using the `middleware()` function.
+
+```js
+    Route::get('/dashboard',[DashboardController:class,'index'])->middleware(AuthMiddleware::class);
+```
