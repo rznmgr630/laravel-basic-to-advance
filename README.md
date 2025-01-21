@@ -663,3 +663,40 @@ session()->forget('key');
 session()->flush(); // clear all the data
 
 ```
+
+## 20. Localization
+
+-   Laravel provides a simple way to handle localization using the `trans` helper function.
+-   You can define translations in the `resources/lang` directory.
+-   By default this feature is not availabe we need to run a command to enable this feature `php artisan lang:publish`.
+
+#### 1: Basic Example
+
+```js
+// create a file inside the land dir common.php `lang/en/common.php`
+// Inside this file
+<?php
+ return [
+  'heading1' => 'Hello',
+  'name' =>'My name is :name'
+ ]
+
+?>
+
+// In order to use this inside my blade file
+{{ __('common.heading1') }}
+{{__('common.name',['name'=>"Rajan"])}}
+
+```
+
+> **Note** In order to use different langugate we need to create a folder inside lang and create the same file inside that folder. By default laravel use
+> `en` as the default language. If you want to use a different language you need to set the language in the `APP_LOCALE=` inside your env.
+
+#### 2: Dynamically set the language
+
+```js
+// inside controller
+function setLang($lang) {
+    App::setLocale($lang);
+}
+```
