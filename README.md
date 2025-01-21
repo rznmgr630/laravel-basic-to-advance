@@ -700,3 +700,147 @@ function setLang($lang) {
     App::setLocale($lang);
 }
 ```
+
+## 21. Basic CRUD Operation
+
+-   All these operation will be conducted inside the controller.
+-   For the crud operation we can use the User model and UserController
+
+#### 1.GET Request
+
+```js
+public function index(Request $request){
+  // ===================== TO GET MULTIPLE USERS ===================
+  $users = User::all(); // get all the users
+  $users= User::where('firstName','Rajan')->get() // get users with first name Rajan
+  $users = User::where('firstName','Rajan')->paginate(10) // get users with first name Rajan and paginate the result
+  $users= User::where('firstName','Rajan')->get()->toArray() // get users with first name Rajan and convert the result to array
+  $users= User::all()->orderBy('id','DESC'); // get all the users and order the result by id in descending order
+  $users= User::all()->latest() // get all the users and order the result by created_at in descending order
+  $users= User::all()->oldest() // get all the users and order the result by created_at in ascending order
+  $users= User::all()->inRandomOrder() // get all the users in random order
+  $users= User::all()->min("id") // will return the minimum id
+  $users= User::all()->max("id") // will return the maximum id
+  $users= User::all()->count() // will return the total users
+  $users= User::all()->sum("id") // will return the total sum of ids of all users
+  $users= User::all()->avg("id") // will return the average of ids of all users
+  $users= User::all()->whereBetween("id",[1,2]) // will return the users with id between 1 and 2
+
+  return view('users.index', compact('users'));
+  return response()->json($users);
+
+  // ===================== TO GET SINGLE USER ======================
+  $user= User::find(1) // get user with id 1
+  $user= User::findOrFail(1) // get user with id 1
+  $user= User::where('firstName','Rajan')->first(); // get user with first name Rajan
+  $user= User::where('firstName','Rajan')->firstOrFail(); // get user with first name Rajan if not found it will throw an exception
+  return response()->json($user);
+}
+```
+
+#### 2. POST Request
+
+```js
+  public function store(Request $request){
+    $user= new User();
+    $user->firstName=$request->input('firstName');
+    $user->lastName=$request->input('lastName');
+    $user->email=$request->input('email');
+    $user->password=$request->input('password');
+    $user->save();
+
+    // OR
+    $user= User::create([
+      'firstName'=>$request->input('firstName'),
+      'lastName'=>$request->input('lastName'),
+      'email'=>$request->input('email'),
+      'password'=>$request->input('password')
+      ]);
+
+    // OR
+    $user = new User();
+    $user->fill($request->all()); // in this case only the fillable fields will be filled
+    $user->save();
+
+    // OR
+    $user = User::create($request->validated()); // in this case only the validated data will be filled
+    return response()->json($user);
+
+    return response()->json($user);
+  }
+```
+
+#### 3. PUT Request
+
+```js
+  public function update($id, Request $request){
+    $user = User::find($id);
+    $user->firstName = $request->input('firstName');
+    $user->lastName = $request->input('lastName');
+    $user->email = $request->input('email');
+    $user->save();
+
+    // OR
+    $user = User::find($id);
+    $user->update($request->all());
+
+    // OR using query builder
+    DB::table('users')->where('id', $id)->update([
+      'firstName' => $request->input('firstName'),
+      'lastName' => $request->input('lastName'),
+      'email' => $request->input('email'),
+    ]);
+
+    // OR
+    $user = User::find($id);
+    $user->fill($request->all());
+    $user->save();
+
+   // Bulk update
+    User::whereIn('id', $request->input('ids'))->update(['status' => 'active']);
+
+  // OR update or create
+  // here it will check if any record exists with the condition and if not found it will create otherwise it will update
+    $user = User::updateOrCreate(
+      ['email' => $request->input('email')], // Condition
+      [
+          'firstName' => $request->input('firstName'),
+          'lastName' => $request->input('lastName'),
+      ]
+    );
+    return response()->json($user);
+  }
+```
+
+#### 3. Delete Request
+
+```js
+  public function delete($id){
+    $user = User::find($id);
+    $user->delete();
+
+    // OR
+    DB::table('users')->where('id', $id)->delete();
+
+    // OR
+    User::where('status', 'inactive')->delete();
+
+    // OR: bulk deletion
+    User::destroy($request->input('ids'));
+
+    // For soft delete we have to perform below operation
+    // 1. Inside the model we need to  include
+       use SoftDeletes;
+    // 2. Inside the migration
+       $table->softDeletes();
+    // Then when we use `$user->delete()` it will not remove the record but set the deleted_at column to current timestamp
+
+    // If we want to restore the soft deleted record
+    $user = User::withTrashed()->find($id);
+    $user->restore();
+
+    // If we want to permanently delete the record ignoring soft delete
+    $user = User::withTrashed()->find($id);
+    $user->forceDelete();
+  }
+```
