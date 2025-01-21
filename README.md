@@ -136,7 +136,14 @@ Route::post("/users", function(Request $request){
 Route::post("/users/{id}", function ($id) {
     echo($id);
 });
+
+// if you want to validate the route param
+Route::post("/users/{id}", function ($id) {
+    echo($id);
+})->where('id',"[0-9]+");
 ```
+
+> **Note** If you have multiple query param then `->where(['firstParam'=>'regex','secondParam'=>'regex'])`.
 
 #### 4. Named Route
 
