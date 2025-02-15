@@ -582,9 +582,42 @@ function getUsers() {
 
 ```
 
-#### 2. Inspecting model
+#### 3. Inspecting model
 
 -   In order to view the detail of the model we can use this command `php artisan model:show User`
+
+#### 4. Accessor and Mutator
+
+##### Accessor
+
+-   Accessor is a method that allows us to modify the data when retrieving from the db.
+-   It is defined in the model and automatically gets called whenever we try to access the attribute.
+
+```js
+  // Let us consider we want to set the first character of our name to uppercase
+  public function getNameAttribute(){
+    return ucfirst($value);
+  }
+
+  // when we access the name attribute, it will automatically call the getNameAttribute method and update the value
+  // in db => name = john
+  // in controller => $user->name => John
+```
+
+##### Mutator
+
+-   It is used to set/update the values when we are inserting or updating the data in the db.
+
+```js
+  // Let us consider we want to set the first character of our name to uppercase
+  public function setNameAttribute($value){
+    return $this->attributes['name']=>strtolower($value);
+  }
+
+  // when we are storing the name attribute, it will automatically call the setNameAttribute method and update the value
+  // in the request if the name is Rajan
+  // in the db name will be john
+```
 
 ## 17. HTTP Client
 
