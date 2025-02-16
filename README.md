@@ -1146,3 +1146,38 @@ function sendMail(){
 // inside the blade file
 <body>Hello, {{ $msg }}</body>
 ```
+
+## 25. Fluent String
+
+-   Fluent Strings in Laravel provide a chainable, expressive API for string manipulation using the Illuminate\Support\Stringable class.
+-   It allows you to perform multiple operations on a string without repeatedly calling helper functions.
+
+```js
+// Old method
+$string = '  Laravel Fluent Strings  ';
+$string = Str::trim($string);
+$string = Str::replace('Fluent', 'Powerful', $string);
+$string = Str::slug($string, '-');
+$string = Str::upper($string);
+
+echo $string; // Output: 'LARAVEL-POWERFUL-STRINGS'
+
+
+// Using Fluent
+$string = Str::of('  Laravel Fluent Strings  ')
+    ->trim()
+    ->replace('Fluent', 'Powerful')
+    ->slug('-')
+    ->upper();
+
+echo $string; // Output: 'LARAVEL-POWERFUL-STRINGS'
+
+// Helpful methods
+$result = Str::of('Hello Laravel')->contains('Laravel'); // Returns true
+$result = Str::of('Laravel Framework')->substr(0, 7); // Returns 'Laravel'
+$result = Str::of('Laravel is great!')->slug('-'); // Returns 'laravel-is-great'
+$result = Str::of('Framework')->prepend('Laravel '); // Returns 'Laravel Framework'
+$result = Str::of('Laravel')->append(' Framework'); // Returns 'Laravel Framework'
+$result = Str::of('   Laravel  ')->trim(); // Returns 'Laravel'
+$result = Str::of('Laravel is great')->replace('great', 'awesome'); // Returns 'Laravel is awesome'
+```
