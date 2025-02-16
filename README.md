@@ -340,6 +340,21 @@ php artisan make:view about
   // Step 4
   // In your view
   <x-alert type="success">Hello</x-alert>
+
+```
+
+#### 9. Inline blade template
+
+-   In Laravel, you can use inline Blade templates to render small Blade components or snippets directly in a route, controller, or variable instead of creating a separate .blade.php file.
+
+```js
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/greet', function () {
+    return Blade::render('Hello, {{ $name }}!', ['name' => 'John']);
+});
+
 ```
 
 ## 12. Form Validation
