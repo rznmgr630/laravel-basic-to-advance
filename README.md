@@ -884,3 +884,191 @@ public function index(Request $request){
     $user->forceDelete();
   }
 ```
+
+## 22. Stub
+
+-   It is a template file that is used as a blueprint for generating boilerplate code.
+-   Laravel uses stubs while generating various files like controllers, models etc
+-   we can publish the predefined stubs using the following command `php artisan stub:publish`
+-   we can modify the file according to our requirements.
+
+## 23. Relationship
+
+-   In laravel, relationship defines how the table data are connected.
+-   There are four types of relationships in laravel:
+
+#### 1. One to One (1:1)
+
+-   In this relationship, one record in a table is associated with one record in another table.
+-   Example: A user has one profile.
+-   By default laravel use the parenttablename_id as foreign key but if you specify the different FK you have to specify it in the model.
+
+```js
+Schema::create('profiles', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->string('bio')->nullable();
+    $table->timestamps();
+});
+
+// Inside the Model
+class User extends Model
+{
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+}
+
+class Profile extends Model
+{
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+
+// Usage
+$user = User::find(1);
+$profile = $user->profile; // Retrieve user's profile
+
+$profile = Profile::find(1);
+$user = $profile->user; // Retrieve profile's user
+```
+
+#### 2. One to Many (1:M)
+
+-   In this relationship, one record in a table is associated with multiple records in another table.
+-   Example: A user has many posts.
+
+```js
+Schema::create('posts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->string('title');
+    $table->text('body');
+    $table->timestamps();
+});
+
+// Model
+class User extends Model
+{
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+}
+
+class Post extends Model
+{
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+
+//Usage
+$user = User::find(1);
+$posts = $user->posts; // Retrieve all posts for a user
+
+$post = Post::find(1);
+$user = $post->user; // Retrieve the user of a post
+```
+
+#### 3. Many to Many
+
+-   In this relationship, multiple records in one table are associated with multiple records in another table.
+-   Example: A user has many roles, and a role has many users.
+-   We use a pivot table to store the many-to-many relationship.
+
+```js
+// Pivot table schema
+Schema::create('role_user', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->foreignId('role_id')->constrained()->onDelete('cascade');
+});
+
+// Model relationship
+class User extends Model
+{
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+}
+
+class Role extends Model
+{
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+}
+
+// Usage
+$user = User::find(1);
+$roles = $user->roles; // Retrieve roles for a user
+
+$role = Role::find(1);
+$users = $role->users; // Retrieve users assigned to this role
+
+// Attaching a role to a user
+$user->roles()->attach($roleId);
+
+// Detaching a role
+$user->roles()->detach($roleId);
+```
+
+#### 4. Many to One (Inverse of One to Many)
+
+-   In this relationship, Many records in one table is associated with single record in another table.
+-   Example: A post has many comments, and a comment belongs to one post.
+-   We use a foreign key to establish the relationship.
+
+```js
+Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->timestamps();
+});
+
+Schema::create('posts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->string('title');
+    $table->text('body');
+    $table->timestamps();
+});
+
+
+// Model Relationship
+class User extends Model
+{
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+}
+
+class Post extends Model
+{
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+
+// Usage
+
+$user = User::find(1);
+$posts = $user->posts; // Retrieve all posts of user with ID 1
+
+
+$post = Post::find(1);
+$user = $post->user; // Retrieve the user who wrote the post
+
+// Querying [Eager Loading]
+$user = User::with('posts')->find(1);
+$posts = Post::with('user')->get();
+```
