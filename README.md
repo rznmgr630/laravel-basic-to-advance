@@ -1072,3 +1072,77 @@ $user = $post->user; // Retrieve the user who wrote the post
 $user = User::with('posts')->find(1);
 $posts = Post::with('user')->get();
 ```
+
+## 24. Email send
+
+-   **Sending Email using Laravel**
+-   **Step 1:** Update the .env
+
+```js
+  MAIL_MAILER = smtp
+  MAIL_HOST = smtp.gmail.com
+  MAIL_PORT = 587
+  MAIL_USERNAME = rajan.midun1@gmail.com
+  MAIL_PASSWORD = null // we will generate the password and store here
+  MAIL_ENCRYPTION=tls
+  MAIL_FROM_ADDRESS =rajan.midun1@gmail.com
+  MAIL_FROM_NAME = "${APP_NAME}"
+```
+
+-   **Step 2:** Generate the password
+-   Go to you google account and click on `Manage your google account`
+-   In the search bar search `app password`
+-   After verifying your account, you will see the one input field to create you app.
+-   Give the name to your app and click on `Create`
+-   You will see the modal with password just copy it and `remove all the spaces` and paste it in the env.
+
+-   **Step 3:** Create a mail class
+-   `php artisan make:mail WelcomeEmail`
+-   It will create a file inside app/Mail
+-   (optional) you can create a controller or use existing controller to send the email.
+-   Inside the controller you can use the following code to send the email
+
+```js
+use Illuminate\Support\Facades\Mail;
+
+function sendMail(){
+  $to='karki@gmail.com';
+  $msg='Welcome  to the team';
+  $subject= 'Programming with Rajan';
+
+  Mail::to($to)->send(new WelcomeEmail($subject,$msg));
+}
+```
+
+-   **Step 4:** Inside the mail class you can use the following code to send the email
+
+```js
+  public $subject;
+  public $msg;
+
+  public function __construct($subject,$msg){
+    $this->subject=$subject;
+    $this->msg=$msg;
+  }
+
+  public function envelop(){
+   return new Envelop(
+    subject: $this->subject
+   );
+  }
+
+  public function content(){
+    return new Content(
+      view:'mail.welcome';
+    )
+  }
+```
+
+-   **Step 5:** Create a view for the email
+-   Go to `resources/views` and create a new file called `welcome.blade.php` inside the mail dir
+-   You can use the following code to send the email
+
+```js
+// inside the blade file
+<body>Hello, {{ $msg }}</body>
+```
