@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
--   Laravel is a MVC php framework for build full featured, large scale web application
+-   Laravel is a MVC php framework for building full featured, large scale web application
 -   It was developed by Taylor Otwell
 -   MVC is a software design pattern commonly used for developing user interface that divides the related program logic into 3 interrelated elements.
 -   `Model => It is responsible for managing the data rules and logic of the application`
